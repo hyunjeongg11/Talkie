@@ -154,7 +154,7 @@ public class ChatMqttToWebSocketHandler {
 
             }
 
-            String jsonMessage = objectMapper.writeValueAsString(new OpenAiConversationItemCreateRequest("user", "아이: " + userMessage + " (관리자지침: 반드시 Audio type으로 반환, 50글자, 2문장 이내로 반환)"));
+            String jsonMessage = objectMapper.writeValueAsString(new OpenAiConversationItemCreateRequest("user", "아이: " + userMessage + " (관리자지침: 반드시 Audio type으로 반환)"));
             webSocketClient.send(jsonMessage);
             // 응답 생성 요청 전송
             String responseCreateJsonMessage = "{\"type\":\"response.create\", \"response\": { \"modalities\": [\"audio\", \"text\"] }}";

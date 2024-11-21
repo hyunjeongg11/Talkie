@@ -79,8 +79,19 @@ public class RealtimeApiSocket extends WebSocketClient {
 
             if ("response.audio.delta".equals(eventType)) {
                 // delta에서 오디오 데이터를 가져오기
+
+//                1안.
+//                byte[] audioBytes = Base64.getDecoder().decode(JsonParser.getDelta(jsonResponse));
+//                String finalAudioBase64 = Base64.getEncoder().encodeToString(audioBytes);
+//                Map<String, String> mqttData = Map.of("audio", finalAudioBase64, "transcript", "");
+//                mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
+
                 String audioDeltaPiece = JsonParser.getDelta(jsonResponse);
                 audioDelta.add(audioDeltaPiece);
+
+//                2안.
+//                Map<String, String> mqttData = Map.of("audio", audioDeltaPiece, "transcript", "");
+//                mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
             }
 
             if ("response.output_item.done".equals(eventType)) {
@@ -92,7 +103,7 @@ public class RealtimeApiSocket extends WebSocketClient {
                 // JSON 응답에서 transcript를 추출
                 String transcript = JsonParser.extractTranscriptFromResponseItemDone(jsonResponse);
                 log.info("Transcript: {}", transcript);
-                if(transcript == null || transcript.isEmpty() || transcript.isBlank()) {
+                if(transcript == null || transcript.isBlank()) {
                     return;
                 }
 
