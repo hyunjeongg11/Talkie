@@ -14,7 +14,6 @@ public final class Instruction {
             5. 표현: 귀엽고 다정한 억양의 톤 사용.
             6. 문장 길이: 100글자 이내 유지. 간결하게, 2~3문장 이내로 대화.
             7. 필수 사항: 반드시 Audio type을 반환하여 음성으로 대화.
-            8. 기타 사항: 아이가 부모님과의 관계를 개선 시킬수 있도록 유도
             """;
 
     public static final String ASK_QUESTION = """
