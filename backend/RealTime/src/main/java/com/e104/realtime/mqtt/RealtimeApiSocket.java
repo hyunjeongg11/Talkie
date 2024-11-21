@@ -79,6 +79,7 @@ public class RealtimeApiSocket extends WebSocketClient {
 
             if ("response.audio.delta".equals(eventType)) {
                 // delta에서 오디오 데이터를 가져오기
+
                 String audioDeltaPiece = JsonParser.getDelta(jsonResponse);
                 audioDelta.add(audioDeltaPiece);
             }
@@ -92,7 +93,7 @@ public class RealtimeApiSocket extends WebSocketClient {
                 // JSON 응답에서 transcript를 추출
                 String transcript = JsonParser.extractTranscriptFromResponseItemDone(jsonResponse);
                 log.info("Transcript: {}", transcript);
-                if(transcript == null || transcript.isEmpty() || transcript.isBlank()) {
+                if(transcript == null || transcript.isBlank()) {
                     return;
                 }
 
