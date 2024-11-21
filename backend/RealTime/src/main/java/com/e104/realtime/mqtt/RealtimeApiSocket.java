@@ -80,14 +80,8 @@ public class RealtimeApiSocket extends WebSocketClient {
             if ("response.audio.delta".equals(eventType)) {
                 // delta에서 오디오 데이터를 가져오기
 
-//                1안.
-                byte[] audioBytes = Base64.getDecoder().decode(JsonParser.getDelta(jsonResponse));
-                String finalAudioBase64 = Base64.getEncoder().encodeToString(audioBytes);
-                Map<String, String> mqttData = Map.of("audio", finalAudioBase64, "transcript", "");
-                mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
-
-//                String audioDeltaPiece = JsonParser.getDelta(jsonResponse);
-//                audioDelta.add(audioDeltaPiece);
+                String audioDeltaPiece = JsonParser.getDelta(jsonResponse);
+                audioDelta.add(audioDeltaPiece);
             }
 
             if ("response.output_item.done".equals(eventType)) {
@@ -104,13 +98,13 @@ public class RealtimeApiSocket extends WebSocketClient {
                 }
 
                 // 오디오 델타를 병합하고 Base64로 인코딩
-//                byte[] combinedAudio = audioDelta.squash();
-//                String finalAudioBase64 = Base64.getEncoder().encodeToString(combinedAudio); // 다시 Base64로 인코딩
+                byte[] combinedAudio = audioDelta.squash();
+                String finalAudioBase64 = Base64.getEncoder().encodeToString(combinedAudio); // 다시 Base64로 인코딩
 
-//                Map<String, String> mqttData = Map.of("audio", finalAudioBase64, "transcript", Objects.requireNonNull(transcript));
-//                // 클라이언트에게 오디오 응답 전송
-//                mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
-//                log.info("데이터 전송 완료!");
+                Map<String, String> mqttData = Map.of("audio", finalAudioBase64, "transcript", Objects.requireNonNull(transcript));
+                // 클라이언트에게 오디오 응답 전송
+                mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
+                log.info("데이터 전송 완료!");
 
                 // 대화 항목 생성 요청 전송
                 String jsonMessage = objectMapper.writeValueAsString(new OpenAiConversationItemCreateRequest("assistant", transcript));
