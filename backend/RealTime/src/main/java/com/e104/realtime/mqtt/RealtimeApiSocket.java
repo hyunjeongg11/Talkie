@@ -81,17 +81,13 @@ public class RealtimeApiSocket extends WebSocketClient {
                 // delta에서 오디오 데이터를 가져오기
 
 //                1안.
-//                byte[] audioBytes = Base64.getDecoder().decode(JsonParser.getDelta(jsonResponse));
-//                String finalAudioBase64 = Base64.getEncoder().encodeToString(audioBytes);
-//                Map<String, String> mqttData = Map.of("audio", finalAudioBase64, "transcript", "");
-//                mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
-
-                String audioDeltaPiece = JsonParser.getDelta(jsonResponse);
-//                audioDelta.add(audioDeltaPiece);
-
-//                2안.
-                Map<String, String> mqttData = Map.of("audio", audioDeltaPiece, "transcript", "");
+                byte[] audioBytes = Base64.getDecoder().decode(JsonParser.getDelta(jsonResponse));
+                String finalAudioBase64 = Base64.getEncoder().encodeToString(audioBytes);
+                Map<String, String> mqttData = Map.of("audio", finalAudioBase64, "transcript", "");
                 mqttOutboundChannel.send(new GenericMessage<>(objectMapper.writeValueAsString(mqttData)));
+
+//                String audioDeltaPiece = JsonParser.getDelta(jsonResponse);
+//                audioDelta.add(audioDeltaPiece);
             }
 
             if ("response.output_item.done".equals(eventType)) {
