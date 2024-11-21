@@ -62,6 +62,7 @@ public class MqttIntegrationConfig {
         adapter.setCompletionTimeout(5000);  // 메시지 수신 시간 초과 설정 (5초)
         adapter.setConverter(new DefaultPahoMessageConverter());  // 기본 메시지 변환기 설정
         adapter.setOutputChannel(mqttInputChannel());  // 수신 메시지를 전송할 채널 설정
+        adapter.setQos(0);
         return adapter;
     }
 
@@ -77,7 +78,7 @@ public class MqttIntegrationConfig {
     public MessageHandler mqttOutbound() {
         MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(serverSendClientId, mqttClientFactory());
 //        messageHandler.setAsync(true);  // 비동기 전송 설정
-        messageHandler.setDefaultQos(1);
+        messageHandler.setDefaultQos(0);
         messageHandler.setDefaultTopic(publishTopic);  // 기본 발행 토픽 설정
         return messageHandler;
     }
